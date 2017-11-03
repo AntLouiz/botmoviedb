@@ -1,12 +1,11 @@
 import telegram
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from decouple import config
 import tmdbsimple as tmdb
 
 
-updater = Updater(token='462659520:AAH8oMaK3NS2wvfBWPYLMUzvdt_TKlH-_Uc')
+updater = Updater(token=config('TELEGRAM_BOT_TOKEN'))
 dispatcher = updater.dispatcher
-
-
 
 
 def start(bot, update):
@@ -41,7 +40,7 @@ dispatcher.add_handler(start_handler)
 
 updater.start_polling()
 
-"""tmdb.API_KEY = '78904a12af904ac32db4775e8e88965b'
+"""tmdb.API_KEY = config('MOVIE_DB_TOKEN')
 # bot token 462659520:AAH8oMaK3NS2wvfBWPYLMUzvdt_TKlH-_Uc
 
 
