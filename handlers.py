@@ -1,26 +1,25 @@
 import telegram
 import tmdbsimple as tmdb
 from telegram.ext import (
-  Filters,
-  CommandHandler,
-  RegexHandler,
-  MessageHandler
+    Filters,
+    CommandHandler,
+    RegexHandler,
+    MessageHandler
 )
 from emoji import emojize
 from decouple import config
 
 
 def start(bot, update):
-  """
-    Show a welcome message
-  """
 
-  msg = "Hi, send a message like \"*find* Thor: Ragnarok\" to see the movie overview."
-  bot.send_message(
-    chat_id=update.message.chat_id,
-    text=msg,
-    parse_mode=telegram.ParseMode.MARKDOWN
-  )
+    msg = "Hi, send a message like \"*find* Thor: Ragnarok\" to see the movie overview."
+
+    bot.send_message(
+        chat_id=update.message.chat_id,
+        text=msg,
+        parse_mode=telegram.ParseMode.MARKDOWN
+    )
+
 
 def get_movie(bot, update, groups):
   """
@@ -35,7 +34,7 @@ def get_movie(bot, update, groups):
     bot.send_message(chat_id=chat_id, text=title)
 
     if(matched_movie['poster_path']):
-      image_link = image_url+matched_movie['poster_path']
+      image_link = image_url + matched_movie['poster_path']
       # print("Image Link: {}".format(image_link))
       bot.send_photo(chat_id=chat_id, photo=image_link)
 
@@ -53,20 +52,19 @@ def get_movie(bot, update, groups):
 
     kb_markup = telegram.ReplyKeyboardMarkup(kb)
     bot.send_message(
-      chat_id=chat_id,
-      text=msg,
-      reply_markup=kb_markup
+        chat_id=chat_id,
+        text=msg,
+        reply_markup=kb_markup
     )
     pass
-
 
   movie_name = groups[0]
   chat_id = update.message.chat_id
 
   if not movie_name:
     bot.send_message(
-      text="Please insert a movie name after \"*find*\".",
-      parse_mode=telegram.ParseMode.MARKDOWN
+        text="Please insert a movie name after \"*find*\".",
+        parse_mode=telegram.ParseMode.MARKDOWN
     )
     return True
 
@@ -90,6 +88,7 @@ def get_movie(bot, update, groups):
     msg = "Movie not found, please try again."
     bot.send_message(chat_id=chat_id, text=msg)
 
+
 def support(bot, update):
   """
     Shows a help message.
@@ -98,10 +97,11 @@ def support(bot, update):
   msg = "Send \"*find* <my_movie>\" to get the film overview."
 
   bot.send_message(
-    chat_id= update.message.chat_id,
-    text=msg,
-    parse_mode=telegram.ParseMode.MARKDOWN
+      chat_id=update.message.chat_id,
+      text=msg,
+      parse_mode=telegram.ParseMode.MARKDOWN
   )
+
 
 def default(bot, update):
   """
@@ -109,12 +109,12 @@ def default(bot, update):
   """
 
   msg = "Sorry, i don\'t understanding that command. Send [/help] to show a help message."
-  msg += emojize(':pensive:', use_aliases= True)
+  msg += emojize(':pensive:', use_aliases=True)
 
   bot.send_message(
-    chat_id=update.message.chat_id,
-    text=msg,
-    parse_mode=telegram.ParseMode.MARKDOWN
+      chat_id=update.message.chat_id,
+      text=msg,
+      parse_mode=telegram.ParseMode.MARKDOWN
   )
 
 
