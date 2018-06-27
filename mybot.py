@@ -1,5 +1,5 @@
 from telegram.ext import Updater
-from callbacks import (
+from handlers import (
     start_handler,
     help_handler,
     get_movie_handler,

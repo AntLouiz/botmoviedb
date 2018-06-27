@@ -9,6 +9,7 @@ from telegram.ext import (
 from emoji import emojize
 from decouple import config
 
+
 def start(bot, update):
   """
     Show a welcome message
