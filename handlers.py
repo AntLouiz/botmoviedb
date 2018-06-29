@@ -48,7 +48,13 @@ def get_movie(bot, update, groups):
 
     for movie in matched_movies:
       title = movie['title']
-      kb.append([telegram.KeyboardButton("find {}".format(title))])
+      key = movie['id']
+      date = movie['release_date']
+
+      if not date:
+        date = '?'
+
+      kb.append([telegram.KeyboardButton("find {} id:{} ({})".format(title, key, date))])
 
     kb_markup = telegram.ReplyKeyboardMarkup(kb)
     bot.send_message(
@@ -58,7 +64,14 @@ def get_movie(bot, update, groups):
     )
     pass
 
-  movie_name = groups[0]
+  if groups[1]:
+    movie_name = groups[1]
+    movie_id = groups[2]
+
+  else:
+    movie_name = groups[0]
+    movie_id = None
+
   chat_id = update.message.chat_id
 
   if not movie_name:
@@ -72,8 +85,16 @@ def get_movie(bot, update, groups):
   search = tmdb.Search()
 
   image_url = "https://image.tmdb.org/t/p/w185"
-  response = search.movie(query=movie_name)
-  results = search.results
+
+  if movie_id:
+    movie = tmdb.Movies(int(movie_id))
+    response = movie.info()
+    results = [response]
+    print(results)
+  else:
+    response = search.movie(query=movie_name)
+    results = search.results
+
   num_results = len(results)
 
   if num_results > 1:
@@ -121,5 +142,5 @@ def default(bot, update):
 start_handler = CommandHandler('start', start)
 help_handler = CommandHandler('support', support)
 
-get_movie_handler = RegexHandler(r"find\s+(.*)$", get_movie, pass_groups=True)
+get_movie_handler = RegexHandler(r"find ((.+)\sid:(\d+)|.+)", get_movie, pass_groups=True)
 default_handler = MessageHandler(Filters.command, default)
