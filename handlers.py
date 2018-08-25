@@ -30,16 +30,13 @@ def get_movie(bot, update, groups):
     title = matched_movie['title']
     overview = matched_movie['overview']
 
-    # print("Title: {}\nOverview: \n{}".format(title, overview))
     bot.send_message(chat_id=chat_id, text=title)
 
     if(matched_movie['poster_path']):
       image_link = image_url + matched_movie['poster_path']
-      # print("Image Link: {}".format(image_link))
       bot.send_photo(chat_id=chat_id, photo=image_link)
 
     bot.send_message(chat_id=chat_id, text=overview)
-    # print("\n")
     pass
 
   def send_movies_message_keyboard(matched_movies, bot, chat_id):
@@ -90,7 +87,6 @@ def get_movie(bot, update, groups):
     movie = tmdb.Movies(int(movie_id))
     response = movie.info()
     results = [response]
-    print(results)
   else:
     response = search.movie(query=movie_name)
     results = search.results
